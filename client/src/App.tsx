@@ -3,20 +3,53 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useEffect, useState } from "react";
+import Home from "@/pages/Home";
+import MovieDetail from "@/pages/MovieDetail";
+import Catalog from "@/pages/Catalog";
+import Favorites from "@/pages/Favorites";
+import Users from "@/pages/Users";
+import Search from "@/pages/Search";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
-      {/* Add pages below */}
-      {/* <Route path="/" component={Home}/> */}
-      {/* Fallback to 404 */}
+      <Route path="/" component={Home} />
+      <Route path="/pelicula/:id" component={MovieDetail} />
+      <Route path="/catalogo" component={Catalog} />
+      <Route path="/favoritos" component={Favorites} />
+      <Route path="/usuarios" component={Users} />
+      <Route path="/buscar" component={Search} />
       <Route component={NotFound} />
     </Switch>
   );
 }
 
 function App() {
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+    const preferredTheme = savedTheme || "dark";
+    setTheme(preferredTheme);
+    
+    if (preferredTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

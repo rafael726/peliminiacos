@@ -1,14 +1,9 @@
-## Instrucciones
-´´´bash
 git clone https://github.com/rafael726/peliminiacos.git
-´´´
+cd StreamViteTail
 
-instalar dependencias
-´´´bash
-npm install 
-´´´
+# Instalar dependencias del frontend
+npm install
 
-ejecutar el proyecto
-´´´bash
-npm npm run dev 
-´´´
+# En modo desarrollo
+npm run dev
+

@@ -10,6 +10,11 @@ import Catalog from "@/pages/Catalog";
 import Favorites from "@/pages/Favorites";
 import Users from "@/pages/Users";
 import Search from "@/pages/Search";
+import Login from "@/pages/Login";
+import Register from "@/pages/Register";
+import CreateMovie from "@/pages/CreateMovie";
+import UserStatistics from "@/pages/UserStatistics";
+import TMDBImport from "@/pages/TMDBImport";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -20,7 +25,12 @@ function Router() {
       <Route path="/catalogo" component={Catalog} />
       <Route path="/favoritos" component={Favorites} />
       <Route path="/usuarios" component={Users} />
+      <Route path="/usuarios/:id/estadisticas" component={UserStatistics} />
       <Route path="/buscar" component={Search} />
+      <Route path="/login" component={Login} />
+      <Route path="/registro" component={Register} />
+      <Route path="/peliculas/crear" component={CreateMovie} />
+      <Route path="/tmdb/importar" component={TMDBImport} />
       <Route component={NotFound} />
     </Switch>
   );

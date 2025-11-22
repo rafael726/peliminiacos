@@ -27,7 +27,7 @@ export function MovieCard({
       <Link href={`/pelicula/${movie.id}`}>
         <div className="aspect-[2/3] overflow-hidden">
           <img
-            src={movie.image_url || placeholderImage}
+            src={movie.image_url ? `http://localhost:8000${movie.image_url}` : placeholderImage} 
             alt={movie.titulo}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             loading="lazy"

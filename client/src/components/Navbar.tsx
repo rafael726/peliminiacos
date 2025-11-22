@@ -1,7 +1,13 @@
 import { Link, useLocation } from "wouter";
-import { Search, Film, Heart, User } from "lucide-react";
+import { Search, Film, Heart, User, Plus, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 
 interface NavbarProps {
@@ -9,7 +15,7 @@ interface NavbarProps {
   currentUser?: { id: number; nombre: string } | null;
 }
 
-export function Navbar({ onSearch, currentUser }: NavbarProps) {
+export function Navbar({ onSearch }: NavbarProps) {
   const [location, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -52,6 +58,29 @@ export function Navbar({ onSearch, currentUser }: NavbarProps) {
           </form>
 
           <div className="flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="hidden sm:flex">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Agregar
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link href="/peliculas/crear" className="cursor-pointer">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Nueva Película
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/tmdb/importar" className="cursor-pointer">
+                    <Download className="w-4 h-4 mr-2" />
+                    Importar desde TMDB
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
             <Link href="/favoritos" data-testid="link-favorites">
               <Button 
                 variant="ghost" 

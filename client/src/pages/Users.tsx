@@ -5,8 +5,8 @@ import { Navbar } from "@/components/Navbar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { User, Mail, Calendar, Heart } from "lucide-react";
+
+import { User, Mail, Calendar, Heart, BarChart } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Users() {
@@ -87,17 +87,30 @@ export default function Users() {
                           <span>Miembro desde {formatDate(user.fecha_registro)}</span>
                         </div>
 
-                        <Link href={`/usuario/${user.id}/favoritos`}>
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            className="w-full"
-                            data-testid={`button-user-favorites-${user.id}`}
-                          >
-                            <Heart className="w-4 h-4 mr-2" />
-                            Ver Favoritos
-                          </Button>
-                        </Link>
+                        <div className="flex gap-2">
+                          <Link href={`/usuarios/${user.id}/favoritos`} className="flex-1">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className="w-full"
+                              data-testid={`button-user-favorites-${user.id}`}
+                            >
+                              <Heart className="w-4 h-4 mr-2" />
+                              Favoritos
+                            </Button>
+                          </Link>
+                          <Link href={`/usuarios/${user.id}/estadisticas`} className="flex-1">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className="w-full"
+                              data-testid={`button-user-stats-${user.id}`}
+                            >
+                              <BarChart className="w-4 h-4 mr-2" />
+                              Stats
+                            </Button>
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </Card>

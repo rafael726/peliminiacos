@@ -50,7 +50,7 @@ export function HeroSection({ movie, onToggleFavorite, isFavorite }: HeroSection
     <div className="relative h-[85vh] w-full overflow-hidden">
       <div className="absolute inset-0">
         <img
-          src={movie.image_url || randomHeroImage}
+          src={'http://localhost:8000' + movie.image_url || randomHeroImage}
           alt={movie.titulo}
           className="w-full h-full object-cover"
         />

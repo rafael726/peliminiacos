@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Pelicula } from "@shared/schema";
+import { Pelicula, PaginatedResponse } from "@shared/schema";
 import { HeroSection } from "@/components/HeroSection";
 import { MovieSection } from "@/components/MovieSection";
 import { Navbar } from "@/components/Navbar";
@@ -18,10 +18,11 @@ export default function Home() {
     queryKey: ["/api/peliculas/recientes/nuevas", { limit: 10 }],
   });
 
-  const { data: allMovies, isLoading: isLoadingAll } = useQuery<Pelicula[]>({
-    queryKey: ["/api/peliculas", { skip: 0, limit: 20 }],
+  const { data: allMoviesData, isLoading: isLoadingAll } = useQuery<PaginatedResponse<Pelicula>>({
+    queryKey: ["/api/peliculas", { page: 1, limit: 20 }],
   });
 
+  const allMovies = allMoviesData?.items;
   const heroMovie = popularMovies?.[0] || recentMovies?.[0];
 
   return (

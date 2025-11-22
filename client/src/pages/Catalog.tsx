@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation, useSearch } from "wouter";
-import { Pelicula } from "@shared/schema";
+import { Pelicula, PaginatedResponse } from "@shared/schema";
 import { Navbar } from "@/components/Navbar";
 import { MovieCard } from "@/components/MovieCard";
 import { SearchFilters, SearchFiltersState } from "@/components/SearchFilters";
@@ -23,6 +23,7 @@ export default function Catalog() {
   const filterType = params.get("filter");
 
   let queryKey: any[];
+  let isPaginated = false;
 
   if (filterType === "popular") {
     queryKey = ["/api/peliculas/populares/top", { limit: 50 }];
@@ -31,10 +32,11 @@ export default function Catalog() {
   } else if (Object.keys(filters).length > 0) {
     queryKey = ["/api/peliculas/buscar", filters];
   } else {
-    queryKey = ["/api/peliculas", { skip: (page - 1) * limit, limit }];
+    queryKey = ["/api/peliculas", { page, limit }];
+    isPaginated = true;
   }
 
-  const { data: moviesData, isLoading } = useQuery<Pelicula[]>({
+  const { data: moviesData, isLoading } = useQuery<Pelicula[] | PaginatedResponse<Pelicula>>({
     queryKey,
   });
 
@@ -48,12 +50,26 @@ export default function Catalog() {
     setLocation("/catalogo");
   };
 
-  const movies = moviesData || [];
-  const totalPages = Math.ceil((movies.length || 0) / limit);
-  const hasNext = page < totalPages;
-  const hasPrev = page > 1;
+  let movies: Pelicula[];
+  let totalPages: number;
+  let hasNext: boolean;
+  let hasPrev: boolean;
+
+  if (isPaginated && moviesData && 'items' in moviesData) {
+    // Respuesta paginada del endpoint principal
+    movies = moviesData.items;
+    totalPages = moviesData.pages;
+    hasNext = moviesData.has_next;
+    hasPrev = moviesData.has_prev;
+  } else {
+    // Respuesta de array (populares, recientes, búsqueda)
+    movies = Array.isArray(moviesData) ? moviesData : [];
+    totalPages = Math.ceil(movies.length / limit);
+    hasNext = page < totalPages;
+    hasPrev = page > 1;
+  }
   
-  const paginatedMovies = filterType ? movies : movies.slice(0, limit);
+  const paginatedMovies = (filterType || Object.keys(filters).length > 0) ? movies : movies;
 
   const getPageTitle = () => {
     if (filterType === "popular") return "Películas Populares";
